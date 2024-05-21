@@ -27,6 +27,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        repository: Akuma-real/1Panel-AppStore
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Import specified directory
       run: |
@@ -36,11 +39,9 @@ jobs:
         rm -rf temp-repo
 
     - name: Commit and push changes
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        git config --global user.name 'Akuma-real'
-        git config --global user.email 'adminlaowang@stu.cwxu.edu.cn'
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add ${{ github.event.inputs.target }}
         git commit -m "Import ${{ github.event.inputs.directory }} from ${{ github.event.inputs.repo }}:${{ github.event.inputs.branch }}"
-        git push https://${GH_TOKEN}@github.com/Akuma-real/1Panel-AppStore.git HEAD:${{ github.ref }}
+        git push origin HEAD:${{ github.ref }}
