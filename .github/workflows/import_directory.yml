@@ -36,9 +36,11 @@ jobs:
         rm -rf temp-repo
 
     - name: Commit and push changes
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add ${{ github.event.inputs.target }}
         git commit -m "Import ${{ github.event.inputs.directory }} from ${{ github.event.inputs.repo }}:${{ github.event.inputs.branch }}"
-        git push
+        git push https://${GH_TOKEN}@github.com/${{ github.repository }}.git HEAD:${{ github.ref }}
